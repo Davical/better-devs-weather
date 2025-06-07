@@ -2,6 +2,7 @@ import React from 'react';
 import { fetchWeather, WeatherResponse } from './lib/weather';
 import CurrentWeatherCard from '../../components/CurrentWeatherCard';
 import DailyForecastGrid from '../../components/DailyForecastGrid';
+import TomorrowWeatherCard from '../../components/TomorrowWeatherCard';
 
 export const revalidate = 600;
 
@@ -25,7 +26,10 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-800 to-blue-600 text-white p-8">
       <div className="max-w-7xl mx-auto space-y-12">
-        <CurrentWeatherCard current={weather.current}/>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+          <CurrentWeatherCard current={weather.current}/>
+          <TomorrowWeatherCard current={weather.current}/>
+        </div>
         <section>
           <h2 className="text-3xl font-semibold mb-4 text-center">7-Day Forecast</h2>
           <DailyForecastGrid daily={weather.daily} />
