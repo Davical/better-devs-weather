@@ -8,7 +8,7 @@ interface CurrentWeatherCardProps {
 }
 
 export default function CurrentWeatherCard({ current }: CurrentWeatherCardProps) {
-  const localTime = dayjs(current.time).format("DD MMMM | HH:mm");
+  const localTime = dayjs(current.time).format("HH:mm");
 
   return (
     <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-8 flex flex-col items-center shadow-xl">
@@ -39,7 +39,7 @@ export default function CurrentWeatherCard({ current }: CurrentWeatherCardProps)
           <p className="text-sm">Wind Dir</p>
         </div>
         <div>
-          <p className="text-xl font-semibold">{current.rain} mm</p>
+          <p className="text-xl font-semibold">{current.precipitation} mm</p>
           <p className="text-sm">Rain</p>
         </div>
       </div>

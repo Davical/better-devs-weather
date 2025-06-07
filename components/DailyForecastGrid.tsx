@@ -9,10 +9,13 @@ interface Props {
 
 export default function DailyForecastGrid({ daily }: Props) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
       {daily.time.map((day, index) => {
+        if (index === 0) {
+          return;
+        }
         const dateStr = dayjs(day).format("ddd, DD MMM");
-        const code = daily.weather_code[index];
+        const code = daily.weathercode[index];
         const maxT = Math.round(daily.temperature_2m_max[index]);
         const minT = Math.round(daily.temperature_2m_min[index]);
         const precipProb = daily.precipitation_probability_max[index];

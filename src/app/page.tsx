@@ -1,38 +1,55 @@
-import React from 'react';
-import { fetchWeather, WeatherResponse } from './lib/weather';
-import CurrentWeatherCard from '../../components/CurrentWeatherCard';
-import DailyForecastGrid from '../../components/DailyForecastGrid';
-import TomorrowWeatherCard from '../../components/TomorrowWeatherCard';
+import React from "react";
+import { DailyData } from "./lib/weather";
+import CurrentWeatherClient from "../../components/CurrentWeatherClient";
+import DailyForecastGrid from "../../components/DailyForecastGrid";
+import HourlyForecastClient from "../../components/HourlyForecastClient";
 
 export const revalidate = 600;
 
 export default async function HomePage() {
-  let weather: WeatherResponse | null = null;
+  const lat = 56.1518;
+  const lon = 10.2064;
 
-  try {
-    weather = await fetchWeather(56.1518, 10.2064);
-  } catch (error) {
-    console.error('Error fetching weather:', error);
-  }
-
-  if (!weather) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-blue-900 text-white">
-        <p className="text-2xl">Unable to load weather data. Please try again later.</p>
-      </div>
-    );
-  }
+  // server‐fetch daily with ISR
+  const dailyRes = await fetch(
+    `https://api.open-meteo.com/v1/forecast?` +
+      `latitude=${lat}&longitude=${lon}` +
+      `&daily=weathercode,temperature_2m_max,temperature_2m_min,` +
+      `wind_speed_10m_max,wind_direction_10m_dominant,` +
+      `precipitation_sum,precipitation_probability_max` +
+      `&timezone=Europe/Copenhagen`,
+    { next: { revalidate: 600 } }
+  );
+  const dailyJson = await dailyRes.json();
+  // drop today
+  dailyJson.daily.time.shift();
+  [
+    "temperature_2m_max",
+    "temperature_2m_min",
+    "weathercode",
+    "wind_speed_10m_max",
+    "wind_direction_10m_dominant",
+    "precipitation_sum",
+    "precipitation_probability_max",
+  ].forEach((f) => (dailyJson.daily as any)[f].shift());
+  const daily: DailyData = dailyJson.daily;
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-800 to-blue-600 text-white p-8">
       <div className="max-w-7xl mx-auto space-y-12">
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-          <CurrentWeatherCard current={weather.current}/>
-          <TomorrowWeatherCard current={weather.current}/>
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="md:w-1/3">
+            <CurrentWeatherClient lat={lat} lon={lon} />
+          </div>
+          <div className="md:w-2/3">
+            <HourlyForecastClient lat={lat} lon={lon} />
+          </div>
         </div>
         <section>
-          <h2 className="text-3xl font-semibold mb-4 text-center">7-Day Forecast</h2>
-          <DailyForecastGrid daily={weather.daily} />
+          <h2 className="text-3xl font-semibold mb-4 text-center">
+            7-Day Forecast
+          </h2>
+          <DailyForecastGrid daily={daily} />
         </section>
       </div>
     </main>
