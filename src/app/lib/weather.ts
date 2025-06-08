@@ -52,7 +52,7 @@ export interface DailyData {
   wind_direction_10m_dominant: number[];   
   precipitation_sum: number[];             
   precipitation_probability_max: number[]; 
-  weathercode: number[]
+  weather_code: number[]
 }
 
 export interface HourlyData {
