@@ -1,13 +1,8 @@
 import React from "react";
-import { DailyData } from "./lib/weather";
 import CurrentWeatherClient from "../../components/CurrentWeatherClient";
-import DailyForecastGrid from "../../components/DailyForecastGrid";
 import HourlyForecastClient from "../../components/HourlyForecastClient";
-import dayjs from "dayjs";
 import TopBar from "../../components/TopBar";
 import DailyForecastClient from "../../components/DailyForecastClient";
-
-export const revalidate = 600;
 
 export default async function HomePage() {
   const lat = 56.1518;
