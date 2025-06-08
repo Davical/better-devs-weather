@@ -1,36 +1,57 @@
-'use client';
-import React from 'react';
-import useSWR from 'swr';
-import HourlyForecastList from './HourlyForecastList';
-import { HourlyData } from '@/app/lib/weather';
+"use client";
+import React from "react";
+import useSWR from "swr";
+import HourlyForecastList from "./HourlyForecastList";
+import { HourlyData } from "@/app/lib/weather";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function HourlyForecastClient({
-  lat,
-  lon,
+    lat,
+    lon,
 }: {
-  lat: number;
-  lon: number;
+    lat: number;
+    lon: number;
 }) {
-  const { data, error } = useSWR<{ hourly: HourlyData }>(
-    `/api/weather/hourly?lat=${lat}&lon=${lon}`,
-    fetcher,
-    { refreshInterval: 600_000 }
-  );
+    const { data, error } = useSWR<{ hourly: HourlyData }>(
+        `/api/weather/hourly?lat=${lat}&lon=${lon}`,
+        fetcher,
+        {
+            refreshInterval: 600_000,
+            revalidateOnFocus: false,
+            shouldRetryOnError: true,
+            errorRetryCount: 3,
+            errorRetryInterval: 30_000,
+        }
+    );
 
-  if (error) return <div>Error loading hourly forecast</div>;
-    if (!data) {
+    // 1) If we’ve never loaded at all:
+    if (!data && error) {
+        return (
+            <div className="p-8 bg-white/10 rounded">
+                Error loading current weather.
+            </div>
+        );
+    }
+
+    // 2) If we have stale or fresh data:
+    if (data) {
+        return (
+            <div className="relative h-full">
+                <HourlyForecastList hourly={data.hourly} />
+            </div>
+        );
+    }
+
+    // 3) Still loading the very first time:
     return (
-      <div className="animate-pulse bg-white/10 rounded-2xl p-8 h-full">
-        <div className="h-8 bg-gray-500 rounded w-1/3 mb-4" />
-        <div className="h-24 bg-gray-500 rounded w-1/2 mx-auto mb-4" />
-        <div className="grid grid-cols-2 gap-6">
-          <div className="h-6 bg-gray-500 rounded" />
-          <div className="h-6 bg-gray-500 rounded" />
+        <div className="animate-pulse bg-white/10 rounded-2xl p-8 h-64">
+            <div className="h-8 bg-gray-500 rounded w-1/3 mb-4"></div>
+            <div className="h-24 bg-gray-500 rounded w-1/2 mx-auto mb-4"></div>
+            <div className="grid grid-cols-2 gap-6">
+                <div className="h-6 bg-gray-500 rounded"></div>
+                <div className="h-6 bg-gray-500 rounded"></div>
+            </div>
         </div>
-      </div>
-    )
-  }
-  return <HourlyForecastList hourly={data.hourly} />;
+    );
 }
