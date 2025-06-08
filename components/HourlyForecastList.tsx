@@ -11,7 +11,7 @@ export default function HourlyForecastList({ hourly }: { hourly: HourlyData }) {
     .filter(({ time }) => RELEVANT_HOURS.includes(dayjs(time).hour()));
 
   return (
-    <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-8 flex flex-col items-center shadow-xl">
+    <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-8 flex flex-col h-full items-center shadow-xl">
       <p className="text-2xl font-medium mb-2">{dayjs(hourly.time[0]).format("DD MMMM")}</p>
       <div className="w-full flex justify-between p-4 rounded-xl">
         {filtered.map(({ time, idx }) => (

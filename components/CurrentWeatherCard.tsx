@@ -12,7 +12,7 @@ export default function CurrentWeatherCard({ current }: CurrentWeatherCardProps)
 
   return (
     <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-8 flex flex-col items-center shadow-xl">
-      <p className="text-2xl font-medium mb-2">{localTime}</p>
+      <p className="text-2xl font-medium mb-2">Today at {localTime}</p>
 
       <p className="text-6xl font-bold">{Math.round(current.temperature_2m)}°C</p>
 
@@ -36,7 +36,6 @@ export default function CurrentWeatherCard({ current }: CurrentWeatherCardProps)
           >
             ↑
           </span>
-          <p className="text-sm">Wind Dir</p>
         </div>
         <div>
           <p className="text-xl font-semibold">{current.precipitation} mm</p>

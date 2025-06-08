@@ -1,31 +1,36 @@
 import React from "react";
 import dayjs from "dayjs";
-import { DailyData } from "@/app/lib/weather";
 import { openWeatherWMOToEmoji } from "@akaguny/open-meteo-wmo-to-emoji";
+import { DailyData } from "@/app/lib/weather";
 
 interface Props {
   daily: DailyData;
 }
 
 export default function DailyForecastGrid({ daily }: Props) {
+  const todayStr    = dayjs().format("YYYY-MM-DD");
+  const tomorrowStr = dayjs().add(1, "day").format("YYYY-MM-DD");
+
+  const entries = daily.time
+    .map((date, idx) => ({ date, idx }))
+    .filter(({ date }) => date !== todayStr && date !== tomorrowStr)
+    .slice(0, 5);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
-      {daily.time.map((day, index) => {
-        if (index === 0) {
-          return;
-        }
-        const dateStr = dayjs(day).format("ddd, DD MMM");
-        const code = daily.weathercode[index];
-        const maxT = Math.round(daily.temperature_2m_max[index]);
-        const minT = Math.round(daily.temperature_2m_min[index]);
-        const precipProb = daily.precipitation_probability_max[index];
-        const precipSum  = daily.precipitation_sum[index];
-        const windMax    = daily.wind_speed_10m_max[index];
-        const windDir    = daily.wind_direction_10m_dominant[index];
+      {entries.map(({ date, idx }) => {
+        const dateStr = dayjs(date).format("ddd, DD MMM");
+        const code       = daily.weathercode[idx];
+        const maxT       = Math.round(daily.temperature_2m_max[idx]);
+        const minT       = Math.round(daily.temperature_2m_min[idx]);
+        const precipProb = daily.precipitation_probability_max[idx];
+        const precipSum  = daily.precipitation_sum[idx];
+        const windMax    = daily.wind_speed_10m_max[idx];
+        const windDir    = daily.wind_direction_10m_dominant[idx];
 
         return (
           <div
-            key={day}
+            key={date}
             className="bg-white/10 backdrop-blur rounded-xl p-4 flex flex-col items-center text-center shadow-md"
           >
             <p className="text-xl font-medium mb-1">{dateStr}</p>
