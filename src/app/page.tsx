@@ -4,6 +4,12 @@ import HourlyForecastClient from "../../components/HourlyForecastClient";
 import TopBar from "../../components/TopBar";
 import DailyForecastClient from "../../components/DailyForecastClient";
 
+/**
+ * Keep the page simple - primary requirement is to have it as a dashboard, which is displayed at the ofice. 
+ * Dashboard will not be interacted with, therefore, doesn't contain any functionality other than showing
+ * current weather. Current and next day weather is updated every 10 minutes and daily is updated every 6 hours. 
+ * @returns dashboard
+ */
 export default async function HomePage() {
   const lat = 56.1518;
   const lon = 10.2064;

@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 import { DailyData } from "@/app/lib/weather";
 
+/**
+ * Called by the client component to fetch forecast at Open-Meteo. This is not sufficient as it is now, as each client will make a 
+ * direct call to the source. 
+ * 
+ * The more ideal solution is to have the server hold the weather state and keep it updated, and clients
+ * will get data from the server. Caching should be used as well. 
+ * @returns daily weather data
+ */
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const lat = searchParams.get("lat") || "56.1518";
