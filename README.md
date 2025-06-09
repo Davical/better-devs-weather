@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Better Devs Weather Dashboard
 
-## Getting Started
+A real-time weather dashboard built with Next.js, React/TypeScript, and Tailwind CSS. Designed for a single office display, it shows:
 
-First, run the development server:
+- **Current Conditions**: Temperature, wind speed & direction, humidity, and precipitation.
+- **Hourly Forecast**: Focused on key commute times (08:00, 12:00, 16:00, 20:00).
+- **7-Day Forecast**: Covering the five days after tomorrow.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Data is fetched from the Open-Meteo API and refreshed automatically:
+- **Current & Hourly**: Client-side polling via SWR every 10 minutes.
+- **Daily**: Client-side polling via SWR every 6 hours.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Node.js** v18 or higher  
+- **npm** v8 or higher (or **yarn**)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone https://github.com/Davical/better-devs-weather.git
+   cd better-devs-weather
 
-## Deploy on Vercel
+2. **Install dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Run in development**
+    ```bash
+    npm run dev
+    # or
+    yarn dev
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Build and start in development**
+    ```bash
+    npm run dev
+
+## ⚙️ Configuration
+No API keys is required as it uses Open-Meteo’s free public API.
+
+## 💡 How It Works
+1. App Router (app/page.tsx) handles server-rendered layout and ensures fast first paint.
+2. Client Components (marked with 'use client') use SWR for data fetching and caching:
+   - Current & Hourly: Polled every minute.
+   - Daily: Polled every 6 hours.
+3. Loading Skeletons provide visual placeholders while data is fetching.
+4. Tailwind CSS delivers a clean, responsive design suitable for large-screen displays.
