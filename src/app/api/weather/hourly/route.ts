@@ -19,17 +19,18 @@ export async function GET(request: Request) {
     const json = await res.json();
     const raw = json.hourly as Record<string, any[]>;
 
-    // 1) Get "YYYY-MM-DD" for *today* in Copenhagen:
+    //REMOVE TODAY'S HOURS
+    // 1) Get "YYYY-MM-DD" for today:
     const todayCph = new Intl.DateTimeFormat("sv-SE", {
         timeZone: "Europe/Copenhagen",
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
-    }).format(new Date()); // e.g. "2025-06-10"
+    }).format(new Date()); // Ex: "2025-06-10"
 
     // 2) Build a Date from that and add one day:
     const tomorrowDate = new Date(todayCph);
-    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+    tomorrowDate.setDate(tomorrowDate.getDate() + 1); //Dangerous?
 
     const td = tomorrowDate.toISOString().split("T")[0]; // "2025-06-11"
 

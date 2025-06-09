@@ -42,10 +42,11 @@ export default function DailyForecastClient({
         return (
             <div className="relative h-full">
                 <DailyForecastGrid daily={data.daily} />
-            </div>    
+            </div>
         );
     }
 
+    // 3) Still loading the very first time:
     return (
         <div className="animate-pulse grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 p-4 bg-white/10 rounded-xl">
             {Array.from({ length: 5 }).map((_, i) => (
