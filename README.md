@@ -38,11 +38,7 @@ Data is fetched from the Open-Meteo API and refreshed automatically:
     npm run dev
     # or
     yarn dev
-
-4. **Build and start in development**
-    ```bash
-    npm run dev
-
+    
 ## ⚙️ Configuration
 No API keys is required as it uses Open-Meteo’s free public API.
 
